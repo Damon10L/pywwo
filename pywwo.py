@@ -126,8 +126,8 @@ class WWOAPI(object):
             self.data = False
 
 class LocalWeather(WWOAPI):
-    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v1/weather.ashx"
-    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v1/premium-weather-V2.ashx"
+    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v2/weather.ashx"
+    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v2/premium-weather-V2.ashx"
 
     def __init__(self, q, num_of_days=1, **keywords):
         """ q and num_of_days are required. max 7 days for free and 15 days for premium """
@@ -135,16 +135,16 @@ class LocalWeather(WWOAPI):
             q, num_of_days=num_of_days, **keywords)
 
 class LocationSearch(WWOAPI):
-    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v1/search.ashx"
-    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/free/v1/search.ashx"
+    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v2/search.ashx"
+    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/free/v2/search.ashx"
 
 class MarineWeather(WWOAPI):
-    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v1/marine.ashx"
-    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v1/marine.ashx"
+    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v2/marine.ashx"
+    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v2/marine.ashx"
 
 class PastWeather(WWOAPI):
-    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v1/past-weather.ashx"
-    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v1/past-weather.ashx"
+    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v2/past-weather.ashx"
+    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v2/past-weather.ashx"
 
     def __init__(self, q, date=None, **keywords):
         """ q and date are required for free API. sometimes date is optional for premium API """
@@ -152,8 +152,8 @@ class PastWeather(WWOAPI):
             q, date=date, **keywords)
 
 class TimeZone(WWOAPI):
-    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v1/tz.ashx"
-    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/free/v1/tz.ashx"
+    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v2/tz.ashx"
+    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/free/v2/tz.ashx"
 
 if __name__ == "__main__":
     """
@@ -203,12 +203,12 @@ if __name__ == "__main__":
             today = weather.data.weather[0]
             tomorrow = weather.data.weather[1]
             twodayslater = weather.data.weather[2]
-            print u"Today: %s, Max \u2103: %d, Min \u2103: %d, %s" %\
+            print u"Today: %s, Max \u2104: %d, Min \u2104: %d, %s" %\
                 (today.date, today.tempMaxC, today.tempMinC, today.weatherDesc)
 
             print
             for w in weather.data.weather:
-                print u"Date: %s, Max \u2103: %d, Min \u2103: %d, %s" %\
+                print u"Date: %s, Max \u2104: %d, Min \u2104: %d, %s" %\
                     (w.date, w.tempMaxC, w.tempMinC, w.weatherDesc)
 
             print
