@@ -10,18 +10,20 @@ PREMIUM_API_KEY = ""
 _keytype = "free"
 _key = FREE_API_KEY
 
+
 def internet_on():
     """fast test by trying one of google IPs"""
     try:
         #unfortunately sometimes google is unstable in China
-        urllib2.urlopen('http://www.baidu.com',timeout=3)
+        urllib2.urlopen('http://www.baidu.com', timeout=3)
         return True
     except urllib2.URLError:
         try:
-            urllib2.urlopen('http://www.google.com',timeout=3)
+            urllib2.urlopen('http://www.google.com', timeout=3)
             return True
         except urllib2.URLError:
             return False
+
 
 def setKeyType(keytype="free"):
     """ keytype either "free" or "premium", set the key if it exists"""
@@ -48,6 +50,7 @@ def setKeyType(keytype="free"):
         print "invalid keytype", keytype
         return False
 
+
 def setKey(key, keytype):
     """ if keytype is valid, save a copy of key accordingly
         and check if the key is valid """
@@ -72,13 +75,14 @@ def setKey(key, keytype):
     w = LocalWeather("london")
     # w.data != False rather than w.data to suppress Python 2.7 FurtureWarning:
     # "The behavior of this method will change in future versions...."
-    if w is not None and hasattr(w, 'data') and w.data != False:
+    if w is not None and hasattr(w, 'data') and w.data is not False:
         return True
     else:
         print "The key is not valid."
         _key = oldkey
         _keytype = oldkeytype
         return False
+
 
 class WWOAPI(object):
     """ The generic API interface """
@@ -101,7 +105,7 @@ class WWOAPI(object):
 
     def _callAPI(self, **keywords):
         for arg in keywords:
-            if keywords[arg] != None:
+            if keywords[arg] is not None:
                 if keywords[arg] in ("No", "NO", "None"):
                     keywords[arg] = "no"
                 elif keywords[arg] in ("Yes", "YES", "Yeah"):
@@ -119,41 +123,46 @@ class WWOAPI(object):
         # if the key is invalid it redirects to another web page
         if response.startswith("<?xml "):
             self.data = objectify.fromstring(response)
-            if self.data is not None and hasattr(self.data, 'error') and self.data.error != False:
+            if self.data is not None and hasattr(self.data, 'error') and self.data.error is not False:
                 print self.data.error.msg
                 self.data = False
         else:
             self.data = False
 
+
 class LocalWeather(WWOAPI):
-    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v1/weather.ashx"
-    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v1/premium-weather-V2.ashx"
+    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v2/weather.ashx"
+    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v2/premium-weather-V2.ashx"
 
     def __init__(self, q, num_of_days=1, **keywords):
         """ q and num_of_days are required. max 7 days for free and 15 days for premium """
         super(LocalWeather, self).__init__(
             q, num_of_days=num_of_days, **keywords)
 
+
 class LocationSearch(WWOAPI):
-    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v1/search.ashx"
-    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/free/v1/search.ashx"
+    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v2/search.ashx"
+    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/free/v2/search.ashx"
+
 
 class MarineWeather(WWOAPI):
-    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v1/marine.ashx"
-    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v1/marine.ashx"
+    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v2/marine.ashx"
+    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v2/marine.ashx"
+
 
 class PastWeather(WWOAPI):
-    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v1/past-weather.ashx"
-    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v1/past-weather.ashx"
+    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v2/past-weather.ashx"
+    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/premium/v2/past-weather.ashx"
 
     def __init__(self, q, date=None, **keywords):
         """ q and date are required for free API. sometimes date is optional for premium API """
         super(PastWeather, self).__init__(
             q, date=date, **keywords)
 
+
 class TimeZone(WWOAPI):
-    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v1/tz.ashx"
-    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/free/v1/tz.ashx"
+    FREE_API_ENDPOINT = "http://api.worldweatheronline.com/free/v2/tz.ashx"
+    PREMIUM_API_ENDPOINT = "http://api.worldweatheronline.com/free/v2/tz.ashx"
 
 if __name__ == "__main__":
     """
@@ -203,12 +212,12 @@ if __name__ == "__main__":
             today = weather.data.weather[0]
             tomorrow = weather.data.weather[1]
             twodayslater = weather.data.weather[2]
-            print u"Today: %s, Max \u2103: %d, Min \u2103: %d, %s" %\
+            print u"Today: %s, Max \u2104: %d, Min \u2104: %d, %s" %\
                 (today.date, today.tempMaxC, today.tempMinC, today.weatherDesc)
 
             print
             for w in weather.data.weather:
-                print u"Date: %s, Max \u2103: %d, Min \u2103: %d, %s" %\
+                print u"Date: %s, Max \u2104: %d, Min \u2104: %d, %s" %\
                     (w.date, w.tempMaxC, w.tempMinC, w.weatherDesc)
 
             print
